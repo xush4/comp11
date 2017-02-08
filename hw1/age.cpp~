@@ -1,0 +1,28 @@
+/**********
+*Comp11
+*HW1
+*Problem2
+*Sheng Xu
+*
+* Test Input: 1 
+* Test Output: 8760
+* 
+* Test Input: 38 
+* Test Output: 332880
+* Test Input: 78 
+* Test Output: 332880
+ */
+
+#include <iostream>
+
+int main()
+{
+  using namespace std;
+  int hours=0, num=0;
+  // Enter Birth year
+  cout<<"How old are you?(In years)"<<endl;
+  cin>>num;
+  hours= 365*24*num;
+  cout<<"You have lived for "<< hours <<" hours!"<<endl;
+  return 0;
+}

@@ -1,0 +1,41 @@
+//COMP11, 2017 Spring
+//Homework 1
+//Sheng Xu
+
+//Problem 1
+I've tried Kate, Emacs and vim. I think Emacs works better for me.It's faster and the the GUI looks similar as that of txt in windows.
+
+//Problem 2
+16 C++ is easy to understand.
+17 The symbos "\n" means the end of the line in the output so that and the next output will be on the following  line.
+18 Read the next number that is typed in from the keyboard and to send it to the variable named "peas_per_pod".
+19 Multiply the two numeric variables "number_of_pods" and "peas_per_pod", and send the result to the variable named "total_peas".
+20 The "#include <iostream>" is used to include the "isostram" library, which includes functions like cin, cout, <<, etc. for input and output.
+
+//Probelm3
+1 Tools and Ingredients:
+  A full jar of Peanut Butter
+  A full jar of Jelly
+  Breads(sliced or whole)
+  Cutting board
+  1 Knife
+  1 tablesSpoon
+
+2 If the bread is not already sliced, use one knife(k1) to slice 2 slices from the whole bread on Cutting board
+
+3 If the lid of peanut better jar is not open, open the lid. 
+
+4 Using one spoon, scoop out 2 tablespoons(s1) of peanut butter and deposit in the center of b1.
+
+5 Using k1, spread the peanut butter evenly across this side of s1.
+
+6 Clean k1, s1
+
+7 Repeat 3-6 with Jelly b2 k1 s1.(The idea i to swrite a function with variables: sources, bread, knife and spoon to cover 3-6 and use it again here in 7.)
+
+8 Place Slice 2 on top of Slice 1 so that the sources (peanut butter and jelly) are between the two slices and the externally-facing sides of each slice do not have sources.
+
+
+//Probelm4
+I'm always missing ";" so there are errors. I just add it when necessary.
+It also happens when I miss "using namespace std;".
