@@ -1,0 +1,43 @@
+/********************
+* COMP11
+* Homework 2
+* Problem 3
+* Laney Strange
+*
+* Test input: 2 wheels, 1 frame, 50 links
+* Expected output: 1 bike built. 0 leftover.
+*
+* Test input: 3 wheels, 10 frames, 500 links
+* Expected output: 1 bike built. Leftover: 1 wheel, 9 frames, 450 links.
+*
+* Test input: 10 wheels, 7 frames, 250 links
+* Expected output: 5 bikes built. Leftover: 0 wheels, 2 frames, 0 links.
+*********************/
+
+#include <iostream>
+#include <string>
+
+int main()
+{
+  using namespace std;
+  int num_of_wheels = 0, num_of_frames = 0, num_of_links = 0;
+  int num_of_bikes = 0;
+  int num_per_bike[3]={2,1,50};
+  int num_of_parts={}
+  sring category[3] = {"wheels","frames","links"};
+  // cout<<category[1]<<endl;
+
+  do {
+    cout<< "How many wheels do you have?"<<endl;
+    cin>>num;
+    if (num_of_wheels==0)
+      {
+        cout<<"Please input a positive number! ";
+      }
+     else if (num_of_wheels<0)
+      {
+        num_of_wheels=-num_of_wheels;
+        cout<<"Your input is negative. I will take it as "<< num_of_wheels<<"."<<endl;
+      }
+  }while(num_of_wheels==0);
+}

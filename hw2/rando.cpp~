@@ -1,0 +1,30 @@
+/********************
+* COMP11
+* Homework 2
+* Problem 1
+* Sheng Xu
+*********************/
+
+# include <iostream>
+# include <ctime>
+# include <cstdlib>
+using namespace std;
+int main(){
+  srand(time(0));
+  int i=5+rand()%11;
+  int ans;
+  int j=5+rand()%11;
+  cout<<"What is "<<i <<" + "<< j <<"?"<<endl;
+  
+   do {
+      cin>>ans;
+      if (i+j==ans){
+	cout<<"Correct. Game over!"<<endl;
+      }
+      else{
+	cout<<"Incorrect. Try again. "<<"What is "<<i <<" + "<< j <<"?"<<endl;
+      }
+   } while (i+j!=ans);
+ 
+  return 0;
+}

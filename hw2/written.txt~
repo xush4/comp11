@@ -1,0 +1,45 @@
+/********************
+* COMP11
+* Homework 2
+* Sheng Xu
+*********************/
+
+Problem 1
+1A Hello there
+1B  there
+1C 
+1D *
+1E This is a weekday
+
+Problem 2
+28 10
+    7
+    4
+    1
+29  
+30 10
+    7
+    4
+    1
+31 -42
+
+
+Problem 3
+3a 2
+3b int y = 3, x = 3;
+   switch (x + 3)
+    {
+    case 6: 
+      y = 1;
+      break;
+    default: 
+      y += 1;
+    }
+3c int y = 3, x = 3;
+   if (x+3 == 6){
+     y = 1;
+   }
+   else{
+     y += 1; 
+   }
+
