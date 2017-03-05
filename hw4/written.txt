@@ -1,0 +1,38 @@
+// Comp11
+// HW4
+// Sheng Xu
+
+// Problem 1
+1A void foo (int num1, int& num2)
+   {
+	using namespace std;
+	num2 = 5;
+	cout << num1 <<endl;
+	cout << num2 <<endl;
+	return;
+   }
+
+1B string bar()
+   {
+	using namespace std;
+	return "Hello!"; 
+   }
+
+1C int num2;
+   foo(8, num2);
+
+1D string say_hello = bar();
+
+// Problem 2
+2A Wow
+
+2B bool even(int num)
+   {
+	return ((num % 2) == 0);
+   }
+2C Yes, it will work.
+
+// Problem 3
+0 2 4 6 8 10 12 14 16 18
+
+   
