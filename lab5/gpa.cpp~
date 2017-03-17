@@ -1,0 +1,39 @@
+/* COMP11
+ * Spring 2017
+ * Lab 5
+ * SHeng Xu
+ * Converting grades to GPAs */
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+const int MAX = 50;
+
+int main()
+{
+	// Variables for the filestream
+	// and num classes the student has taken
+	ifstream infile;
+	int num_classes = 0;
+	double gpas[MAX];
+
+
+    /****************************************/
+	/* YOUR CODE HERE!						*/
+    /****************************************/
+	
+
+	// Now the array is populated with doubles.
+	// Calculate the average GPA of the student.
+	double avg_gpa, total = 0.0;
+	for (int i = 0; i < num_classes; i++)
+	{
+		total += gpas[i];
+	}
+	avg_gpa = total / num_classes;
+	cout << "The student's GPA is " 
+		 << avg_gpa << endl;
+	
+	return 0;
+}
