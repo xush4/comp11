@@ -1,0 +1,38 @@
+#include <iostream>
+#include <iomanip>
+#include <limits>
+
+using namespace std;
+
+int main() {
+    int i = 4;
+    double d = 4.0;
+    string s = "HackerRank ";    
+    // Declare second integer, double, and String variables.
+    int a;
+    double b;   
+    // Read and save an integer, double, and String to your variables.
+    // Note: If you have trouble reading the entire string, please go back and review the Tutorial closely.
+    cin >> a>> b;
+    string st,sr;
+    int m,j,k,ln,sum;
+    char ch;
+
+    // Print the sum of both integer variables on a new line.
+    cout << (a+i)<<endl;
+    double e = d+b;
+    printf("%.1f \n", e);
+    // cout << "Please enter an English sentence...\n";
+    // cout << s <<" ";
+    while(sr+=(ch=cin.get()),ch!='\n');//输入一个英文句子
+    for(sum=i=0,ln=sr.length();i<ln;i++){//判断单词
+        if(sr[i]>='A' && sr[i]<='Z' || sr[i]>='a' && sr[i]<='z' || s[i]=='-')
+            st+=s[i];//以字母始字母终,中间只有字母和'-'的就组织成单词存入st
+        else if(st!=""){
+            cout << st << " ";//输出该单词(一个一行)
+            sum++;//单词个数增1
+            st="";//st置空,表示该单词已输出
+        }
+    }
+    return 0;
+}
