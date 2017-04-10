@@ -1,0 +1,147 @@
+/* COMP11
+ * Spring 2017
+ * Sample Code
+ * File I/O and Dynamic Arrays */
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+// Consts for grades
+const double A_PLUS = 4.33;
+const double A = 4.0;
+const double A_MINUS = 3.67;
+const double B_PLUS = 3.33;
+const double B = 3.0;
+const double B_MINUS = 2.67;
+const double NO_GRADE = 0.0;
+
+// Function prototypes
+int count_classes(char *);
+int populate_grades(char *, double []);
+
+int main()
+{
+	// Prompt the user for the file name
+    char filename[15];
+    cout << "What is the transcript file?\n";
+    cin >> filename;
+
+	// Count the number of classes
+    int count = count_classes(filename);
+
+	// Sanity-check on the number
+    if (count < 1)
+    {
+        cout << "Looks like student hasn't taken any "
+             << "classes yet! Problem with the file?\n";
+        return 1;
+    }
+	
+	// Dynamically allocate an array for
+	// numeric grades
+    double *grades = new double[count];
+	
+    // Calculate the GPA again from the file
+	int count_grades = populate_grades(filename, grades);
+	
+	// Sanity check that the numbers are valid
+    if (count_grades < 1 || count_grades != count)
+    {
+        cerr << "Problem with grades, please try again\n";
+        return -1;
+    }
+	
+	// Now, calculate the average	
+	double avg_gpa;
+	double total = 0.0;
+	for (int i = 0; i < count_grades; i++)
+		total += grades[i];
+	avg_gpa = total / count_grades;
+	cout << "The student's GPA is " << avg_gpa << endl;
+
+	// Delete the dynamically-allocated array
+	delete []grades;
+	return 0;
+}
+
+// Function: count_classes
+// Input: String, the name of a student's file
+// Returns: Int, the number of classes that student took
+int count_classes(char *filename)
+{
+	// Open the file and check for error
+	ifstream infile;
+	infile.open(filename);
+	if (!infile.is_open())
+	{
+		cerr << "Failed to open file\n";
+		return -1;
+	}
+
+	// Count them up: One class per line
+	int count = 0;
+	string course, grade;
+	while (!infile.eof())
+	{	
+		infile >> course;
+		if (course == "-1")
+			break;
+		
+		count++;
+		infile >> grade;
+	}
+
+	// Close the file (always!)
+	infile.close();		
+
+	// Return the number we counted
+	return count;
+}
+
+// Function: populate_grades
+// Input: Filename with transcript, array to populate
+// Returns: Number of grades actually counted
+// Does: Populates already-allocated array of doubles
+int populate_grades(char *filename, double grades[])
+{
+	// Open the file and check for error
+	ifstream infile;
+	infile.open(filename);
+	if (!infile.is_open())
+	{
+		cerr << "Failed to open file\n";
+		return -1;
+	}
+
+	int i = 0;
+    string course, grade;
+	while (!infile.eof())
+	{
+		// Check for EOF sentinel
+		infile >> course;
+        if (course == "-1")
+            break;
+
+		infile >> grade;
+		if (grade == "A+")
+			grades[i] = A_PLUS;
+		else if (grade == "A")
+			grades[i] = A;
+		else if (grade == "A-")
+			grades[i] = A_MINUS;
+		else if (grade == "B+")
+			grades[i] = B_PLUS;
+		else if (grade == "B")
+			grades[i] = B;
+		else if (grade == "B-")
+			grades[i] = B_MINUS;
+		else
+			grades[i] = NO_GRADE;
+		i++;
+	}
+
+	// Close the file and return
+    infile.close();
+    return i;
+}
