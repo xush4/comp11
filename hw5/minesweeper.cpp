@@ -27,8 +27,8 @@
 
 using namespace std;
 
-const int DIMEN = 3;
-const int MAX_MINES = 2;
+const int DIMEN = 9;
+const int MAX_MINES = 15;
 const string MINE = "x";
 const string UNSEEN = "-";
 
