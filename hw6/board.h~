@@ -1,0 +1,70 @@
+//HW 6 & 7
+//Comp11
+//Sheng Xu
+//Sign of by
+
+//Description:
+//Class: board
+//Fuction:
+//initial
+//sum
+//print board
+//add_number
+
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
+#ifndef BOARD_H_
+#define BOARD_H_
+
+typedef int* IntArrayPtr;
+
+class Board
+{
+    private:
+        int dimen;
+        int sum;
+	char next_step;
+	int *numbers;
+	//int num_zeros;
+	//int *zero_position;
+    public:
+	
+        // Constuctor & Destructor;
+        Board(int new_dimen=4);
+	~Board();
+
+        // Setters and Getters
+        //void set_dimen(int dimen_input);
+        
+	//void set_matrix(vector<vector<int> >new_numbers);
+	
+	
+        // void set_board(char move);
+        void set_sum();
+	void set_matrix(int *new_numbers);
+	void set_achar(char char_input);
+
+        int get_dimen();
+        int get_sum();
+	IntArrayPtr get_matrix();
+	char get_achar();
+	//Initialize
+	void init_board();
+	// make changes
+	void make_move();
+	void go_up();
+	void go_left();
+	void go_down();
+	void go_right();
+
+        // Output
+        void print_board();
+}; 
+
+#endif
