@@ -1,32 +1,71 @@
 // Comp11
 // HW7
-//Class board
+// Class board
+// Sheng Xu
+
+//Additioanal score included.
+
+//Five documents included: board.h game.h play_all.cpp
+//                         board.cpp game.cpp
+
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <cmath>
 #include <vector>
 #include "board.h"
-// Set defaulted value
 
 using namespace std;
 typedef int* IntArrayPtr;
 
 // Constructor & Destructor
+Board::Board()
+{
+  dimen = 1;
+  sum =0;
+  next_step='0';
+  //numbers = NULL;
+  myMatrix=new IntArrayPtr [dimen];
+  for(int i=0 ; i<dimen;i++)
+    myMatrix[i]=NULL;
+  for(int i=0;i<4;i++)
+    rec[i]=i+1;
+  rec[4]=4;
+  direction[0]="up";//0-w-up 1-a-l 2-s-d 3-d-r
+  direction[1]="left";
+  direction[2]="down";
+  direction[3]="right";
+  top_rec="up";
+}
+
 Board::Board(int new_dimen)
 {
   dimen = new_dimen;
   sum = 0;
-  next_step = '0';// 0 for start game; e for end game
-  numbers = new int[dimen*dimen];
+  next_step = '1';// 1 for start game; q for end game
+  //numbers = new int[dimen*dimen];
+  myMatrix= new IntArrayPtr [dimen];
+  for (int i=0; i<dimen;i++)
+    myMatrix[i]= new int [dimen];
+  for(int i=0;i<4;i++)
+    rec[i]=i+1;
+  rec[4]=4;
   //num_zeros=dimen*dimen;
   //zero_position=new int[dimen*dimen];
+  direction[0]="up";//0-w-up 1-a-l 2-s-d 3-d-r
+  direction[1]="left";
+  direction[2]="down";
+  direction[3]="right";
+  top_rec="up";
 }
 
 Board::~Board() 
 {
-  delete[] numbers;
-  //delete[] zero_position;
+  //  delete numbers;
+  for(int i=0; i<dimen;i++)
+    if(myMatrix[i]!=NULL)
+      delete[] myMatrix[i];
+  delete[] myMatrix;
 }
 
 // Setters & getters.
@@ -42,33 +81,39 @@ int Board::get_dimen()
   return dimen;
 }
 
-void Board::set_sum()
+void Board::set_sum(int a)
+//  shouldn't be called in this program.
 {
-  sum = 0;
-  for (int i = 0; i < dimen*dimen; i++)
-    {
-      sum += numbers[i];
-    }
+  sum=a;
 }
 
-int Board::get_sum()
+int Board::get_sum() //Return Score
 {
   return sum;
 }
 
 void Board::set_matrix (int *new_numbers)
-//void Board::set_matrix (vector<vector<int> >new_numbers)
+// left to set NULL
 {
-  numbers = new_numbers;
+  for(int i=0; i<dimen;i++)
+    myMatrix[i]= new_numbers;
 }
 
-IntArrayPtr Board::get_matrix()
+void Board::set_matrix2 (int new_numbers[])
+// set matrix with array
 {
+  for (int i = 0;i < dimen;i++)
+    for(int j = 0;j < dimen;j++)
+      myMatrix[i][j] = new_numbers[i*dimen+j];
+}
 
-  return numbers;
+IntArrayPtr *Board::get_matrix2()
+{
+  return myMatrix;
 }
 
 void Board::set_achar(char char_input)
+// set move
 {
   next_step=char_input;
 }
@@ -79,22 +124,28 @@ char Board::get_achar()
   return next_step;
 }
 
+void Board::set_rec(string a)
+// set recommendation
+{
+  top_rec=a;
+}
+
+string Board::get_rec()
+// return recommendation
+{
+  return top_rec;
+}
+
 // Initialize
 void Board::init_board()
+// put 2 two in board, zero to others.
 {
   const int New_Dimen = get_dimen();
-  for (int i = 0;i < New_Dimen*New_Dimen; i++)
-    {
-      numbers[i] = 0;
-      //zero_position[i]=i;
-    }
-  numbers[New_Dimen*New_Dimen-2] = 2;
-  //for (int i=New_Dimen*New_Dimen-2; i<dimen*dimen;i++)
-  //  zero_position[i]=zero_position[i+1];
-  numbers[New_Dimen*(New_Dimen-1)-1] = 2;
-  //for (int i=New_Dimen*(New_Dimen-1)-1; i<dimen*dimen;i++)
-  //  zero_position[i]=zero_position[i+1];
-  //num_zeros-=2;
+  for (int i = 0;i < dimen;i++)
+    for(int j = 0;j < dimen;j++)
+      myMatrix[i][j] = 0;
+  myMatrix[New_Dimen-1][New_Dimen-2] = 2;
+  myMatrix[New_Dimen-2][New_Dimen-1] = 2;
 }
 
 // Make changes
@@ -108,28 +159,11 @@ void Board::make_move()
     go_down();
   else if (next_step == 'd')
     go_right();
-  int add_number = 2;
-  int rand_number = rand()%10;
-  if (rand_number == 1)
-    add_number = 4;
-  int zeros[dimen*dimen];
-  int num_zero = 0;
-  for (int i = 0; i < dimen*dimen; i++)
-    {
-      if (numbers[i] == 0)
-	{
-	  zeros[num_zero] = i;
-	  num_zero++;
-	}
-    }
-  if (num_zero == 0)
-    next_step = 'e';
-  else 
-    {
-  int place = rand()%(num_zero);
-  numbers[zeros[place]] = add_number;
-  set_sum();
-    }
+
+  add_anum();
+  Calculate_Recommendation();
+  Make_Recommendation();
+  //cout<<rec[4]<<endl;
 }
 
 void Board::go_up()
@@ -139,7 +173,7 @@ void Board::go_up()
   const int New_Dimen2 = get_dimen();
   for (int i = 0;i < dimen;i++)
     for(int j = 0;j < dimen;j++)
-      matrix1[i][j] = numbers[i*New_Dimen2+j];
+      matrix1[i][j] = myMatrix[i][j];
 
   // put non-zero to top
   int row, col, new_row, new_col;
@@ -153,10 +187,14 @@ void Board::go_up()
       for(int i = 0; i < New_Dimen2; i++)
 	matrix1[i][col] = arr[i];
     }
+
   // update
   for (int i = 0;i < dimen; i++)
     for(int j = 0;j < dimen; j++)
-      numbers[i*New_Dimen2+j] = matrix1[i][j];
+      {
+	//numbers[i*New_Dimen2+j] = matrix1[i][j];
+	myMatrix[i][j]=matrix1[i][j];
+      }
 }
 
 void Board::go_down()
@@ -166,9 +204,9 @@ void Board::go_down()
   const int New_Dimen2 = get_dimen();
   for (int i = 0;i < dimen; i++)
     for(int j = 0;j < dimen; j++)
-      matrix1[i][j] = numbers[i*New_Dimen2+j];
+      matrix1[i][j] =  myMatrix[i][j];
   
-  // put non-zero to top
+  // put non-zero to botton
   int row, col, new_row, new_col;;
   for (col = 0; col < New_Dimen2; col++)
     {
@@ -186,7 +224,10 @@ void Board::go_down()
   // update numbers
   for (int i = 0;i < dimen;i++)
     for(int j = 0;j < dimen;j++)
-      numbers[i*New_Dimen2+j] = matrix1[i][j];
+      {
+	//numbers[i*New_Dimen2+j] = matrix1[i][j];
+	myMatrix[i][j]=matrix1[i][j];
+      }
 }
 
 void Board::go_left()
@@ -196,7 +237,8 @@ void Board::go_left()
   const int New_Dimen2 = get_dimen();
   for (int i = 0; i < dimen; i++)
     for(int j = 0; j < dimen; j++)
-      matrix1[i][j] = numbers[i*New_Dimen2+j];
+      matrix1[i][j] = myMatrix[i][j];
+
   // put non-zero to left
   int row, col, new_row, new_col;
   for (row = 0;row < New_Dimen2; row++)
@@ -216,7 +258,10 @@ void Board::go_left()
   //update numbers
   for (int i = 0; i < dimen; i++)
     for(int j = 0; j < dimen; j++)
-      numbers[i*New_Dimen2+j] = matrix1[i][j];
+      {
+	//numbers[i*New_Dimen2+j] = matrix1[i][j];
+	myMatrix[i][j]=matrix1[i][j];
+      }
 }
 
 void Board::go_right()
@@ -226,7 +271,7 @@ void Board::go_right()
   const int New_Dimen2 = get_dimen();
   for (int i = 0; i < dimen; i++)
     for(int j = 0; j < dimen; j++)
-      matrix1[i][j] = numbers[i*New_Dimen2+j];
+      matrix1[i][j] =  myMatrix[i][j];
 
   // put non-zero to Right
   int row, col, new_row, new_col;
@@ -242,10 +287,49 @@ void Board::go_right()
       for(int i = 0;i < New_Dimen2; i++)
 	matrix1[row][New_Dimen2-i-1] = arr[i];
     }
+
   //update numbers
   for (int i = 0; i < dimen; i++)
     for(int j = 0; j < dimen; j++)
-      numbers[i*New_Dimen2+j] = matrix1[i][j];
+      {
+	//numbers[i*New_Dimen2+j] = matrix1[i][j];
+	myMatrix[i][j]=matrix1[i][j];
+      }
+}
+
+void Board::add_anum()
+{
+  //90% 2; 10% 4
+  int add_number = 2;
+  int rand_number = rand()%10;
+  if (rand_number == 1)
+    add_number = 4;
+  int zeros[dimen*dimen];
+  int num_zero = 0;
+  int new_numbers[dimen*dimen];
+  for (int i = 0;i < dimen; i++)
+    for(int j = 0;j < dimen; j++)
+      new_numbers[i*dimen+j] =  myMatrix[i][j];
+  for (int i = 0; i < dimen*dimen; i++)
+    {
+      if (new_numbers[i] == 0)
+	{
+	  zeros[num_zero] = i;
+	  num_zero++;
+	}
+    }
+  if (num_zero==0)
+    {
+      cout<< "You can't make this move!"<<endl;
+    }
+  else
+    {
+      int place = rand()%(num_zero);
+      //numbers[zeros[place]] = add_number;
+      new_numbers[zeros[place]] = add_number;
+      set_matrix2(new_numbers);
+      //set_sum();
+    }
 }
 
 void Board::line_up(int arr[])
@@ -266,11 +350,14 @@ void Board::line_up(int arr[])
 	    k++;
 	  }
 	}
-  for (new_col = 1; new_col <= k; new_col++)
+  for (new_col = 1; new_col < k; new_col++)
 	{
-	  if (arr[new_col] == arr[new_col-1])
+	  if (arr[new_col] == arr[new_col-1] 
+	      && arr[new_col]!=0)
 	    {
+	      sum+=(arr[new_col]*2);
 	      arr[new_col-1] *= 2;
+	     
 	      for(int i = new_col; i < k; i++)
 	        arr[i]=arr[i+1];
 	      //new_col--;
@@ -279,22 +366,107 @@ void Board::line_up(int arr[])
       }
 }
 
+void Board::Calculate_Recommendation()
+{
+  int origin_number[dimen*dimen];
+  for (int i = 0;i < dimen;i++)
+  for(int j = 0;j < dimen;j++)
+  origin_number[i*dimen+j]=myMatrix[i][j];
+  int origin_sum=sum;
+  int available_move=0;// Number of directions 
+                       // we can use in next step 
+  int rank[4];// 0-w-up 1-a-l 2-s-d 3-d-r
+  int num_zero[4];
+  for (int i=0; i<4;i++)
+    {
+      rank[i]=i+1;
+      num_zero[i]=0;
+    }
+  for (int j=0; j<4; j++)
+    {
+      if (j==0)
+	go_up();
+      if (j==1)
+	go_left();
+      if (j==2)
+	go_down();
+      if (j==3)
+	go_right();
+  
+      for (int i = 0; i < dimen; i++)
+	{
+	  for (int k=0;k<dimen;k++) 
+	    {
+	      if (myMatrix[i][k] == 0)
+		{
+		  //Find num of zeors
+		  num_zero[j]++;
+		}
+	    }
+	}
+      if (num_zero[j]>0)
+	available_move++;
+      set_matrix2(origin_number);
+      set_sum(origin_sum);
+    }
+
+  //Rank Directions.
+  for(int i=0; i<4; i++){
+    for(int j=i+1; j<4; j++){
+      int change_same=rand()%2;
+      if (num_zero[j]>num_zero[i]
+	  || (num_zero[i]==num_zero[j] && change_same==1))
+	{
+	  int temp1=num_zero[j];
+	  num_zero[j]=num_zero[i];
+	  num_zero[i]=temp1;
+	  int temp2=rank[j];
+	  rank[j]=rank[i];
+	  rank[i]=temp2;
+	}
+    }
+  }
+  for(int i=0; i<4; i++)
+    {
+      rec[i]=rank[i];
+    }
+  rec[4]=available_move;
+  top_rec=direction[rec[0]-1];
+}
+
+void Board::Make_Recommendation()
+{
+  if (rec[4]==0)
+    {
+      next_step = 'q';
+      cout<< "End of Game! "<<endl;
+    }
+      else 
+    {
+      cout<<"There are "<<rec[4]<<" move(s) available: "
+	  <<endl; 
+      for (int i=0; i<rec[4]; i++)
+	  cout<< direction[rec[i]-1]<<" ";
+      cout<<endl;
+    }
+}
+
 //Output
 void Board::print_board()
 {
+  cout<<"Your Score is "<<sum<<"."<<endl;
   const int New_Dimen2 = get_dimen();
-  // IntArrayPtr new_numbers=get_matrix();
   for (int i=0; i<dimen; i++)
     {
       for (int j=0; j<dimen; j++)
 	{
-	  if(numbers[i*New_Dimen2+j] == 0)
+	  if(myMatrix[i][j] == 0)
 	    cout<<"x   ";
 	  else
 	    {
-	      cout<< numbers[i*New_Dimen2+j];
+	      cout<< myMatrix[i][j];
 	      int k = 4;
-	      int a = numbers[i*New_Dimen2+j];
+	      int a = myMatrix[i][j];
 	      while (a > 0)
 		{
 		  k--;
@@ -307,7 +479,7 @@ void Board::print_board()
 	    }
 	  if(j == dimen-1)
 	    {
-	      for(int space = 0; space < 4; space++)
+	      for(int space = 0; space < 3; space++)
 		cout<< endl;
 	    }
 	  else

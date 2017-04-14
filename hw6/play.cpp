@@ -18,7 +18,7 @@ int main()
   B->init_board();
   B->print_board();
   //cout<< B.get_dimen()<<endl;
-  B->set_sum();
+  //B->set_sum();
   cout<< B->get_sum()<<endl;
   //int *all_number=B->get_matrix();
   //int matrix1[dimen][dimen];
@@ -44,33 +44,41 @@ int main()
   //	}
   //  }
   // cout<<endl;
-  for(int i=0; i<150;i++){
+  for(int i=0; i<2;i++){
+    if (B->get_achar()!='q'){
   B->set_achar('w');
   char a=B->get_achar();
   cout<<a<<" Should be up"<<endl;
   B->make_move();
   B->print_board();
-  cout<< B->get_sum()<<endl;
+  //cout<< B->get_sum()<<endl;
+    }
 
+    if (B->get_achar()!='q'){
   B->set_achar('a');
-  a=B->get_achar();
+  char a=B->get_achar();
   cout<<a<<" Should be left"<<endl;
   B->make_move();
   B->print_board();
-  cout<< B->get_sum()<<endl;
+  //cout<< B->get_sum()<<endl;
+ }
 
+ if (B->get_achar()!='q'){
   B->set_achar('s');
-  a=B->get_achar();
+  char a=B->get_achar();
   cout<<a<<" Should be down"<<endl;
   B->make_move();
   B->print_board();
-  cout<< B->get_sum()<<endl;
-  
+  //cout<< B->get_sum()<<endl;
+ }
+
+ if (B->get_achar()!='q'){  
   B->set_achar('d');
-  a=B->get_achar();
+  char a=B->get_achar();
   cout<<a<<" Should be right"<<endl;
   B->make_move();
   B->print_board();
-  cout<< B->get_sum()<<endl;
+  //cout<< B->get_sum()<<endl;
+ }
   }
 }
