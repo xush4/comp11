@@ -59,7 +59,7 @@ int main(){
   cin>>age>>a;
   cin.getline(num,100,',');
   cin>>score1>>a>>score2>>a>>score3>>a>>score4;
-  //cout<<score1<<" "<<score2<<" "<<score3<<" "<<score4<<endl;
+  cout<<score1<<" "<<score2<<" "<<score3<<" "<<score4<<endl;
   Student s(name,age,num,score1,score2,score3,score4);
   s.get_inf();
   return 0;
